@@ -6,7 +6,7 @@ from google.cloud import ndb
 logger = logging.getLogger(__name__)
 
 
-@lru_cache(maxsize=32)
+@lru_cache
 def get_datastore_client():
     return ndb.Client()
 
