@@ -2,7 +2,9 @@ from datetime import datetime
 from decimal import Decimal
 from enum import Enum
 from typing import List, Optional
+from uuid import UUID, uuid4
 
+from pydantic import BaseModel as PydanticBaseModel
 from pydantic import EmailStr
 
 from .base import BaseModel, State
@@ -16,7 +18,8 @@ class ShipmentStatus(str, Enum):
     RETURNED = "RETURNED"
 
 
-class ShipmentEvent(BaseModel):
+class ShipmentEvent(PydanticBaseModel):
+    id: UUID = uuid4()
     status: ShipmentStatus
     timestamp: datetime
     location: Optional[str] = None
