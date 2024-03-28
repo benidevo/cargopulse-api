@@ -8,3 +8,8 @@ google-cloud-monitoring==2.19.3
 google-cloud-datastore==2.19.0
 gunicorn==21.2.0
 redis==5.0.3
+bcrypt==4.1.2
+email-validator==2.1.1
+pydantic-settings==2.2.1
+python-dotenv==1.0.1
+google-cloud-ndb==2.3.1

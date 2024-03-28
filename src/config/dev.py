@@ -12,5 +12,7 @@ class DevConfig(CommonConfig):
 
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379
-    REDIS_PASSWORD: str = None
+    REDIS_PASSWORD: str = ""
     REDIS_DB: int = 0
+
+    JWT_ACCESS_TOKEN_EXPIRATION_SECONDS: int = 3600
