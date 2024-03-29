@@ -2,7 +2,6 @@ from datetime import datetime
 from decimal import Decimal
 from enum import Enum
 from typing import List, Optional
-from uuid import UUID, uuid4
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import EmailStr
@@ -19,11 +18,13 @@ class ShipmentStatus(str, Enum):
 
 
 class ShipmentEvent(PydanticBaseModel):
-    id: UUID = uuid4()
     status: ShipmentStatus
     timestamp: datetime
     location: Optional[str] = None
     notes: Optional[str] = None
+
+    class Config:
+        frozen = True
 
 
 class ShipmentModel(BaseModel):
@@ -41,3 +42,6 @@ class ShipmentModel(BaseModel):
     value: Optional[Decimal] = None
     delivery_instructions: Optional[str] = None
     events: Optional[List[ShipmentEvent]] = []
+
+    def add_event(self, event: ShipmentEvent):
+        self.events.append(event)

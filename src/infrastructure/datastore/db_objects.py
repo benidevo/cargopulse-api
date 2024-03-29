@@ -85,9 +85,6 @@ class ApiKey(Base):
 
     @classmethod
     def from_model(cls, model: ApiKeyModel):
-        # _id = model.id or str(uuid4())
-        # key = ndb.Key(ApiKey, _id)
-
         user_key = ndb.Key(User, model.user_id)
         return cls(
             id=model.id,

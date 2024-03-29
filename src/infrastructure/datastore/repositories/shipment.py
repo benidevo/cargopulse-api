@@ -1,9 +1,11 @@
 from typing import Optional
 
+from google.cloud import ndb
+
 from domain.model.shipment import ShipmentModel
 from domain.repositories.shipment_repository import ShipmentRepository
 from infrastructure.datastore.datastore_client import datastore_context
-from infrastructure.datastore.db_objects import Shipment
+from infrastructure.datastore.db_objects import Shipment, User
 
 
 class DatastoreShipmentRepository(ShipmentRepository):
@@ -37,8 +39,9 @@ class DatastoreShipmentRepository(ShipmentRepository):
         return shipment.to_model(shipment)
 
     @datastore_context
-    def delete_shipment(self, shipment_id: str) -> None:
-        shipment = Shipment.get_by_id(shipment_id)
-        if not shipment:
-            return
-        shipment.key.delete()
+    def get_user_shipments(self, user_id: str) -> Optional[ShipmentModel]:
+        user_key = ndb.Key(User, user_id)
+        shipments = Shipment.query(Shipment.user_key == user_key).fetch()
+        if not shipments:
+            return None
+        return [shipment.to_model(shipment) for shipment in shipments]

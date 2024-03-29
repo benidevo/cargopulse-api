@@ -6,7 +6,7 @@ from flask_restx import Namespace
 from application.services.user_service import UserService
 from domain.model.user import UserModel
 from interface.api.base_api import AuthenticatedBaseView, BaseView
-from interface.dto.user_dto import CreateUserDtO, LoginDto, UpdateUserDtO
+from interface.dtos import CreateUserDtO, LoginDto, UpdateUserDtO
 
 logger = logging.getLogger(__name__)
 

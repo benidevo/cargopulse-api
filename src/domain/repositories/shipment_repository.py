@@ -22,5 +22,5 @@ class ShipmentRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def delete_shipment(self, shipment_id: str) -> None:
+    def get_user_shipments(self, user_id: str) -> Optional[ShipmentModel]:
         raise NotImplementedError

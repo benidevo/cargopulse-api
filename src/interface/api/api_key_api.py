@@ -6,7 +6,7 @@ from flask_restx import Namespace
 from application.services.notification_service import NotificationService
 from domain.model.api_key import ApiKeyModel
 from interface.api.base_api import AuthenticatedBaseView
-from interface.dto.api_key_dto import ApiKeyCreateDto
+from interface.dtos import ApiKeyCreateDto
 
 api = Namespace("/api-keys", description="API key related operations")
 
