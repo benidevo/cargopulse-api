@@ -28,16 +28,6 @@ The CargoPulse POC aims to showcase how to monitor application metrics and manag
 - JWT: For user authentication
 - Docker and Docker Compose: For containerization and orchestration
 
-## Getting Started
-
-1. Clone the repository.
-2. Set up a GCP project and enable the necessary services.
-3. Configure secrets in GCP Secrets Manager.
-4. Set up environment variables or secrets for authentication credentials.
-5. Deploy the application to GCP using Cloud Run or another suitable service.
-6. Access the API endpoints to manage shipments and users.
-7. Monitor application metrics using GCP Cloud Monitoring dashboards.
-
 ## Usage
 
 - Authentication: Use JWT tokens for authenticating API requests.
