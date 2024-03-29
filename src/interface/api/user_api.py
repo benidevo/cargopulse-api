@@ -2,30 +2,24 @@ import logging
 
 from flask import abort
 from flask_restx import Namespace
-from pydantic import BaseModel, EmailStr
 
 from application.services.user_service import UserService
 from domain.model.user import UserModel
 from interface.api.base_api import AuthenticatedBaseView, BaseView
-from interface.dto.user_dto import CreateUserDtO, UpdateUserDtO
+from interface.dto.user_dto import CreateUserDtO, LoginDto, UpdateUserDtO
 
 logger = logging.getLogger(__name__)
 
 api = Namespace("/auth", description="Authentication related operations")
 
 
-class LoginSchema(BaseModel):
-    email: EmailStr
-    password: str
-
-
 @api.route("/login")
 class LoginView(BaseView):
     service = UserService()
-    serializer = LoginSchema
+    serializer = LoginDto
 
     def post(self):
-        payload: LoginSchema = self._validate_payload()
+        payload: LoginDto = self._validate_payload()
         token = self.service.authenticate(payload.email, payload.password)
         if not token:
             abort(401, "Invalid email or password")

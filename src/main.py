@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 from flask_restx import Api
 
 from config import settings
+from interface.api.api_key_api import api as api_key_api
 from interface.api.user_api import api as user_api
 
 app = Flask(__name__)
@@ -17,6 +18,7 @@ api = Api(
 
 
 api.add_namespace(user_api, path="/auth")
+api.add_namespace(api_key_api, path="/api-keys")
 
 
 @app.errorhandler(Exception)

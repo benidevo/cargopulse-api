@@ -1,7 +1,6 @@
 from datetime import datetime
 from enum import Enum
 from typing import Optional
-from uuid import uuid4
 
 from pydantic import BaseModel as PydanticBaseModel
 
@@ -13,19 +12,18 @@ class BaseModel(PydanticBaseModel):
 
     def to_serializable_dict(self) -> dict:
         """
-        Convert the object into a serializable dictionary, excluding specified keys, and converting datetimes to ISO format.
+        Return a serializable dictionary representation of the model, excluding the 'password' field.
+        The dictionary will contain the model's data, with any datetime values converted to ISO format and any values containing 'url' converted to strings.
         Returns:
-            Dict: The serializable dictionary representation of the object.
+            dict: The serializable dictionary representation of the model.
         """
         exclude = ("password",)
-        model_dict = self.model_dump()
+        model_dict = self.model_dump(exclude=exclude)
         for key, value in model_dict.items():
             if isinstance(value, datetime):
                 model_dict[key] = value.isoformat()
-
-        for key in exclude:
-            if key in model_dict:
-                del model_dict[key]
+            if "url" in key:
+                model_dict[key] = str(value)
 
         return model_dict
 

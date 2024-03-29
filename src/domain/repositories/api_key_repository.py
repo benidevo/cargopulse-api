@@ -18,13 +18,7 @@ class ApiKeyRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create_api_key(self, api_key: dict) -> ApiKeyModel:
-        raise NotImplementedError
-
-    @abstractmethod
-    def update_webhook_url(
-        self, user_id: str, api_key_id: str, webhook_url: str
-    ) -> Optional[ApiKeyModel]:
+    def create_api_key(self, api_key: ApiKeyModel) -> ApiKeyModel:
         raise NotImplementedError
 
     @abstractmethod

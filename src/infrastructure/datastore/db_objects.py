@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from google.cloud import ndb
+from pydantic import HttpUrl
 
 from domain.model.api_key import ApiKeyModel
 from domain.model.shipment import ShipmentModel
@@ -15,11 +16,10 @@ class Base(ndb.Model):
     def __init__(self, *args, **kwargs):
         if not kwargs.get("id"):
             kwargs["id"] = str(uuid4())
+            class_name = self.__class__.__name__
+            key = ndb.Key(class_name, kwargs["id"])
+            kwargs["key"] = key
         super(Base, self).__init__(*args, **kwargs)
-
-    @classmethod
-    def get_by_id(cls, id) -> ndb.Model:
-        return cls.query(cls.id == id).get()
 
 
 class User(Base):
@@ -64,33 +64,37 @@ class User(Base):
 
 class ApiKey(Base):
     name = ndb.StringProperty()
-    key = ndb.StringProperty(indexed=True)
+    api_key = ndb.StringProperty(indexed=True)
     user_key = ndb.KeyProperty(kind=User, indexed=True)
     webhook_url = ndb.StringProperty()
 
     def __repr__(self):
-        return f"ApiKey(name={self.name}, key={self.key}, user_id={self.user_id}, webhook_url={self.webhook_url})"
+        return f"ApiKey(name={self.name}, key={self.api_key}, user_id={self.user_key}, webhook_url={self.webhook_url})"
 
     def to_model(self):
+        url = HttpUrl(self.webhook_url)
         return ApiKeyModel(
             id=self.id,
             name=self.name,
-            key=self.key,
+            key=self.api_key,
             user_id=self.user_key.id(),
-            webhook_url=self.webhook_url,
+            webhook_url=url,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
 
     @classmethod
     def from_model(cls, model: ApiKeyModel):
+        # _id = model.id or str(uuid4())
+        # key = ndb.Key(ApiKey, _id)
+
         user_key = ndb.Key(User, model.user_id)
         return cls(
             id=model.id,
             name=model.name,
-            key=model.key,
+            api_key=model.key,
             user_key=user_key,
-            webhook_url=model.webhook_url,
+            webhook_url=str(model.webhook_url),
         )
 
 

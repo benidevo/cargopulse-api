@@ -18,15 +18,16 @@ class BaseView(Resource):
 
     def _validate_payload(self, _serializer=None) -> Any:
         """
-        Validates the payload of the request.
+        Validates the payload of a request using a provided serializer or the default serializer.
 
-        This method attempts to validate the payload of the request using the serializer defined in the class. If the payload is valid, it returns the deserialized data. If the payload is invalid, it logs the validation error and raises a `ValidationError` exception.
+        Args:
+            _serializer (Serializer, optional): The serializer to use for validation. Defaults to None.
 
         Returns:
-            Any: The deserialized data if the payload is valid.
+            Any: The validated payload.
 
         Raises:
-            ValidationError: If the payload is invalid.
+            ValidationError: If the payload fails validation.
 
         """
         if not _serializer:
@@ -40,7 +41,6 @@ class BaseView(Resource):
 
 class AuthenticatedBaseView(BaseView):
     auth_service = AuthenticationService
-    service = UserService()
 
     @staticmethod
     def _extract_authorization_token() -> str:
@@ -67,8 +67,12 @@ class AuthenticatedBaseView(BaseView):
         if not user_id:
             abort(401, "Invalid or expired token")
 
-        user = self.service.get_user(user_id)
+        user = self._get_user_service.get_user(user_id)
         if not user:
             abort(401, "Invalid or expired token")
 
         return user
+
+    @property
+    def _get_user_service(self):
+        return UserService()

@@ -15,3 +15,8 @@ class UpdateUserDtO(BaseModel):
 
 class CreateUserDtO(UpdateUserDtO):
     password: str
+
+
+class LoginDto(BaseModel):
+    email: EmailStr
+    password: str

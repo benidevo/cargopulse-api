@@ -17,6 +17,7 @@ class DatastoreUserRepository(UserRepository):
     @datastore_context
     def get_user_by_email(self, email: str) -> Optional[UserModel]:
         user = User.query(User.email == email).get()
+
         if not user:
             return None
         return user.to_model()
