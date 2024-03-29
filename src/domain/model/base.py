@@ -7,7 +7,7 @@ from pydantic import BaseModel as PydanticBaseModel
 
 
 class BaseModel(PydanticBaseModel):
-    id: str = str(uuid4())
+    id: str = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 

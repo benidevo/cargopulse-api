@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from google.cloud import ndb
 
 from domain.model.api_key import ApiKeyModel
@@ -9,6 +11,15 @@ class Base(ndb.Model):
     id = ndb.StringProperty(indexed=True)
     created_at = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
     updated_at = ndb.DateTimeProperty(auto_now=True, indexed=True)
+
+    def __init__(self, *args, **kwargs):
+        if not kwargs.get("id"):
+            kwargs["id"] = str(uuid4())
+        super(Base, self).__init__(*args, **kwargs)
+
+    @classmethod
+    def get_by_id(cls, id) -> ndb.Model:
+        return cls.query(cls.id == id).get()
 
 
 class User(Base):

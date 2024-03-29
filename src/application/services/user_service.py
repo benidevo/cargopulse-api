@@ -1,8 +1,11 @@
 from typing import Optional
 
+from pydantic import EmailStr
+
 from domain.model.user import UserModel
-from domain.repositories.user_repository import DatastoreUserRepository, UserRepository
+from domain.repositories.user_repository import UserRepository
 from domain.services.authentication_service import AuthenticationService
+from infrastructure.datastore.repositories.user import DatastoreUserRepository
 
 
 class UserService:
@@ -12,10 +15,10 @@ class UserService:
     def authenticate(self, email, password) -> Optional[str]:
         return self.auth_service.authenticate(email, password)
 
-    def get_user(self, user_id):
+    def get_user(self, user_id: str) -> Optional[UserModel]:
         return self.user_repository.get_user(user_id)
 
-    def get_user_by_email(self, email):
+    def get_user_by_email(self, email: EmailStr) -> Optional[UserModel]:
         return self.user_repository.get_user_by_email(email)
 
     def create_user(self, user_model: UserModel) -> UserModel:
