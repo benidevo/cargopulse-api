@@ -5,7 +5,6 @@ FROM python:${PYTHON_VERSION} as python
 FROM python as python-build-stage
 ARG BUILD_ENVIRONMENT=dev
 
-# Removed libpq-dev since PostgreSQL is not being used
 RUN apt-get update && apt-get -y --no-install-recommends install build-essential
 
 COPY ./requirements .
