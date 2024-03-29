@@ -1,13 +1,16 @@
 import logging
 
-from flask import request
-from flask_restx import Namespace, Resource
+from flask import abort
+from flask_restx import Namespace
 from pydantic import BaseModel, EmailStr, ValidationError
 
 from application.services.user_service import UserService
+from domain.model.user import UserModel
+from interface.api.base_api import BaseApi
+
+logger = logging.getLogger(__name__)
 
 api = Namespace("/auth", description="User related operations")
-logger = logging.getLogger(__name__)
 
 
 class LoginSchema(BaseModel):
@@ -16,23 +19,42 @@ class LoginSchema(BaseModel):
 
 
 @api.route("/login")
-class UserApi(Resource):
+class LoginView(BaseApi):
     service = UserService()
     serializer = LoginSchema
-    validated_data = None
 
     def post(self):
         try:
-            self._validate_payload()
-            token = self.service.authenticate(**self.validated_data)
-            return {"message": "Login successful", "data": token}, 200
+            payload: LoginSchema = self._validate_payload()
         except ValidationError as e:
-            return {"message": "Validation error", "errors": f"{e}"}, 400
+            abort(400, f"Validation error: {e}")
+        token = self.service.authenticate(payload.email, payload.password)
+        if not token:
+            abort(401, "Invalid email or password")
 
-    def _validate_payload(self):
+        return {"message": "Login successful", "data": token}, 200
+
+
+@api.route("/register")
+class RegisterView(BaseApi):
+    serializer = UserModel
+    service = UserService()
+
+    def post(self):
         try:
-            data = self.serializer(**request.get_json())
-            self.validated_data = data.model_dump()
+            payload: UserModel = self._validate_payload()
         except ValidationError as e:
-            logger.error(f"Validation error: {e}")
-            raise e
+            abort(400, f"Validation error: {e}")
+
+        user = self.service.get_user_by_email(payload.email)
+        if user:
+            abort(409, "User already exists")
+
+        user = self.service.create_user(payload)
+        return (
+            {
+                "message": "User created successfully",
+                "data": user.to_serializable_dict(),
+            },
+            201,
+        )

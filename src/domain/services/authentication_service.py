@@ -14,17 +14,20 @@ class AuthenticationService:
     @classmethod
     def authenticate(cls, email: EmailStr, password: str) -> str:
         user = cls.user_repository.get_user_by_email(email)
-        if not user or not cls.compare_passwords(password, user.password):
+        if not user or not cls._compare_passwords(password, user.password):
             return None
-        return cls._generate_jwt(str(user.id))
+        return cls._generate_jwt(user.id)
 
     @staticmethod
     def _compare_passwords(plain_password: str, hashed_password: str) -> bool:
-        return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password)
+        return bcrypt.checkpw(
+            plain_password.encode("utf-8"), hashed_password.encode("utf-8")
+        )
 
     @staticmethod
     def hash_password(password: str) -> str:
-        return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+        hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+        return hashed.decode("utf-8")
 
     @staticmethod
     def _generate_jwt(user_id: str) -> str:

@@ -1,13 +1,18 @@
 import logging
 from functools import lru_cache
 
+from google.auth.credentials import AnonymousCredentials
 from google.cloud import ndb
+
+from config import settings
 
 logger = logging.getLogger(__name__)
 
 
 @lru_cache
 def get_datastore_client():
+    if settings.DEBUG:
+        return ndb.Client(project="test", credentials=AnonymousCredentials())
     return ndb.Client()
 
 

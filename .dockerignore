@@ -1,0 +1,81 @@
+## Python ##
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+## Virtual Environments ##
+venv/
+.env
+.env.local
+.env.*.local
+
+# PyInstaller
+# Usually these files are written by a python script from a template
+# before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+## Flask & Flask-RESTx ##
+instance/
+.webassets-cache
+
+## Testing ##
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+## Translations ##
+# Flask-Babel
+translations/*.mo
+translations/*.pot
+
+## Distribution ##
+# Packaging
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+bin/
+var/
+sdist/
+develop-eggs/
+*.egg
+*.whl
+
+## Development ##
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Project files
+*.iml
+
+# Flask
+.flaskenv
+
+# Node.js
+node_modules/
+
+# Database
+*.db
+*.sqlite
+
+# Others
+.DS_Store
+*.log
+tmp/

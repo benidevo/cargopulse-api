@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  api: &api
+    build:
+      context: .
+      dockerfile: docker/dev/Dockerfile
+    container_name: cargopulse-api
+    volumes:
+      - .:/app:z
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+      - gcloud-tasks-emulator
+    networks:
+      - cargopulse
+
+  db:
+    image: google/cloud-sdk:470.0.0-emulators
+    container_name: cargopulse-db
+    command: gcloud beta emulators datastore start --host-port=0.0.0.0:8081 --no-store-on-disk --quiet
+    ports:
+      - "8081:8081"
+    environment:
+      - CLOUDSDK_CORE_PROJECT=dummy-project
+    volumes:
+      - cargopulse_db_data:/opt/data
+    env_file:
+      - ./.env
+    networks:
+      - cargopulse
+
+  redis:
+    image: redis:7.0.0-alpine
+    container_name: cargopulse-redis
+    networks:
+      - cargopulse
+
+  gcloud-tasks-emulator:
+    image: ghcr.io/aertje/cloud-tasks-emulator:1.2.0
+    container_name: cargopulse-gcloud-tasks-emulator
+    command: -host 0.0.0.0 -port 8123
+    ports:
+      - "${TASKS_PORT:-8123}:8123"
+    networks:
+      - cargopulse
+
+volumes:
+  cargopulse_db_data:
+  media_volume:
+  static_volume:
+
+
+networks:
+    cargopulse:
+      driver: bridge

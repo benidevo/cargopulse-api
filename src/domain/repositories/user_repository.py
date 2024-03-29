@@ -38,14 +38,14 @@ class DatastoreUserRepository(UserRepository):
         user = User.get_by_id(user_id)
         if not user:
             return None
-        return user.to_model(user)
+        return user.to_model()
 
     @datastore_context
     def get_user_by_email(self, email: str) -> Optional[UserModel]:
         user = User.query(User.email == email).get()
         if not user:
             return None
-        return user.to_model(user)
+        return user.to_model()
 
     @datastore_context
     def create_user(self, user: dict) -> UserModel:
@@ -62,7 +62,7 @@ class DatastoreUserRepository(UserRepository):
             if hasattr(user, field) and value:
                 setattr(user, field, value)
         user.put()
-        return user.to_model(user)
+        return user.to_model()
 
     @datastore_context
     def delete_user(self, user_id: str) -> None:
@@ -74,4 +74,4 @@ class DatastoreUserRepository(UserRepository):
     @datastore_context
     def get_all_users(self) -> List[UserModel]:
         users = User.query().fetch()
-        return [user.to_model(user) for user in users]
+        return [user.to_model() for user in users]

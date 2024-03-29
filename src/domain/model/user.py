@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pydantic import EmailStr, SecretStr
+from pydantic import EmailStr
 
 from .base import BaseModel, State
 
@@ -16,7 +16,7 @@ class Industry(str, Enum):
 class UserModel(BaseModel):
     name: str
     email: EmailStr
-    password: SecretStr
+    password: str
     organization: str
     industry: Industry
     address: str

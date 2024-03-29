@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+# Default log level to debug if not set
+if [ -z "${LOG_LEVEL:-}" ]; then
+    export LOG_LEVEL="debug"
+fi
+
+# Default HTTP port
+export HTTP_PORT="8000"
+
+# Default number of workers
+if [ -z "${HTTP_WORKERS:-}" ]; then
+    export HTTP_WORKERS=2
+fi
+
+# Wait for Redis
+echo "Waiting for Redis..."
+while ! nc -z redis 6379; do
+    sleep 0.1
+done
+echo "Redis is now available"
+
+# Set PYTHONPATH to include the app directory
+export PYTHONPATH=/app
+
+echo "Starting Flask web server..."
+
+# Construct the gunicorn command
+gunicorn_command="gunicorn src.main:app \
+    --bind 0.0.0.0:$HTTP_PORT \
+    --workers $HTTP_WORKERS \
+    --timeout 120 \
+    --log-level $LOG_LEVEL \
+    --reload"
+
+# Execute the gunicorn command
+exec $gunicorn_command
