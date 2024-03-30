@@ -3,5 +3,16 @@ steps:
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/cargopulse-api:$SHORT_SHA', '-f', 'docker/prod/Dockerfile', '.']
     dir: '.'
 
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'cargopulse-api'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/cargopulse-api:$SHORT_SHA'
+      - '--platform'
+      - 'managed'
+
 images:
   - 'gcr.io/$PROJECT_ID/cargopulse-api:$SHORT_SHA'
