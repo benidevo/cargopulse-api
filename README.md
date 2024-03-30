@@ -11,7 +11,6 @@ The CargoPulse POC aims to showcase how to monitor application metrics and manag
 - User authentication with JWT
 - API key management
 - Shipment management
-- Webhook integration for shipment state notifications
 - Cloud monitoring for application metrics visualization
 - Secrets management with GCP Secrets Manager
 
@@ -20,7 +19,6 @@ The CargoPulse POC aims to showcase how to monitor application metrics and manag
 - Flask: Web framework for building the API endpoints
 - Google Cloud Platform (GCP) services:
   - Cloud Datastore: For storing user and shipment data
-  - Cloud Tasks: For webhook integration
   - Cloud Monitoring: For monitoring application metrics
   - Secrets Manager: For managing secrets securely
 - Pydantic: For data validation and configuration
@@ -31,9 +29,8 @@ The CargoPulse POC aims to showcase how to monitor application metrics and manag
 ## Usage
 
 - Authentication: Use JWT tokens for authenticating API requests.
-- Shipment Management: Create, update, and delete shipments.
+- Shipment Management: Create and update shipments.
 - User Management: Manage users and API keys for accessing the API.
-- Webhook Integration: Set up webhook URLs for receiving shipment state notifications.
 
 ## License
 

@@ -20,7 +20,7 @@ class ShipmentStatus(str, Enum):
 class ShipmentEvent(PydanticBaseModel):
     status: ShipmentStatus
     timestamp: datetime
-    location: Optional[str] = None
+    location: str
     notes: Optional[str] = None
 
     class Config:

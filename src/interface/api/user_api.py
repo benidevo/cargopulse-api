@@ -38,6 +38,8 @@ class RegisterView(BaseView):
         if user:
             abort(409, "User already exists")
 
+        payload = UserModel(**payload.model_dump())
+
         user = self.service.create_user(payload)
         return (
             {

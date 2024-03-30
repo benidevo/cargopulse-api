@@ -3,8 +3,8 @@ from typing import List
 from flask import abort
 from flask_restx import Namespace
 
-from application.services.notification_service import NotificationService
 from domain.model.api_key import ApiKeyModel
+from domain.services.authentication_service import AuthenticationService
 from interface.api.base_api import AuthenticatedBaseView
 from interface.dtos import ApiKeyCreateDto
 
@@ -14,7 +14,7 @@ api = Namespace("/api-keys", description="API key related operations")
 @api.route("/")
 class ApiKeyView(AuthenticatedBaseView):
     serializer = ApiKeyModel
-    service = NotificationService()
+    service = AuthenticationService()
 
     def post(self):
         user = self._perform_authentication()
@@ -40,7 +40,7 @@ class ApiKeyView(AuthenticatedBaseView):
 @api.route("/<api_key_id>")
 class ApiKeyDetailView(AuthenticatedBaseView):
     serializer = ApiKeyModel
-    service = NotificationService()
+    service = AuthenticationService()
 
     def get(self, api_key_id):
         self._perform_authentication()

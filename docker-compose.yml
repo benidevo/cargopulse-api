@@ -15,8 +15,6 @@ services:
       - "8000:8000"
     depends_on:
       - db
-      - redis
-      - gcloud-tasks-emulator
     networks:
       - cargopulse
 
@@ -35,25 +33,8 @@ services:
     networks:
       - cargopulse
 
-  redis:
-    image: redis:7.0.0-alpine
-    container_name: cargopulse-redis
-    networks:
-      - cargopulse
-
-  gcloud-tasks-emulator:
-    image: ghcr.io/aertje/cloud-tasks-emulator:1.2.0
-    container_name: cargopulse-gcloud-tasks-emulator
-    command: -host 0.0.0.0 -port 8123
-    ports:
-      - "${TASKS_PORT:-8123}:8123"
-    networks:
-      - cargopulse
-
 volumes:
   cargopulse_db_data:
-  media_volume:
-  static_volume:
 
 
 networks:

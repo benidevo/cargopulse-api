@@ -10,7 +10,7 @@ from infrastructure.datastore.repositories.user import DatastoreUserRepository
 
 class UserService:
     user_repository: UserRepository = DatastoreUserRepository()
-    auth_service: AuthenticationService = AuthenticationService
+    auth_service: AuthenticationService = AuthenticationService()
 
     def authenticate(self, email, password) -> Optional[str]:
         return self.auth_service.authenticate(email, password)

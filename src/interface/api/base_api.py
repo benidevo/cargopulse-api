@@ -38,9 +38,23 @@ class BaseView(Resource):
             logger.error(f"Validation error: {e}")
             abort(400, f"Validation error: {e.errors()}")
 
+    def _validate_query_params(self, _serializer) -> Any:
+        """
+        Validate query parameters using the provided serializer and handle any validation errors.
+        Params:
+            _serializer: The serializer to use for validating query parameters.
+        Returns:
+            Any: The validated query parameters.
+        """
+        try:
+            return _serializer(**request.args)
+        except ValidationError as e:
+            logger.error(f"Validation error: {e}")
+            abort(400, f"Validation error: {e.errors()}")
+
 
 class AuthenticatedBaseView(BaseView):
-    auth_service = AuthenticationService
+    auth_service = AuthenticationService()
 
     @staticmethod
     def _extract_authorization_token() -> str:

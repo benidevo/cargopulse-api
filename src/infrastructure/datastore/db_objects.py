@@ -1,10 +1,12 @@
+import json
+from decimal import Decimal
 from uuid import uuid4
 
 from google.cloud import ndb
 from pydantic import HttpUrl
 
 from domain.model.api_key import ApiKeyModel
-from domain.model.shipment import ShipmentModel
+from domain.model.shipment import ShipmentEvent, ShipmentModel
 from domain.model.user import UserModel
 
 
@@ -112,9 +114,12 @@ class Shipment(Base):
     events = ndb.JsonProperty()
 
     def __repr__(self) -> str:
-        return f"Shipment(tracking_id={self.tracking_id}, status={self.status}, user_id={self.user_id}, weight_kg={self.weight_kg}, description={self.description}, value={self.value}, receiver={self.receiver}, receiver_contact={self.receiver_contact}, origin_state={self.origin_state}, origin_address={self.origin_address}, destination_state={self.destination_state}, destination_address={self.destination_address})"
+        return f"Shipment(tracking_id={self.tracking_id}, status={self.status}, user_key={self.user_key}, weight_kg={self.weight_kg}, description={self.description}, value={self.value}, receiver={self.receiver}, receiver_contact={self.receiver_contact}, origin_state={self.origin_state}, origin_address={self.origin_address}, destination_state={self.destination_state}, destination_address={self.destination_address})"
 
     def to_model(self) -> ShipmentModel:
+        events = json.loads(self.events) if self.events else []
+        if events:
+            events = [ShipmentEvent(**json.loads(event)) for event in events]
         return ShipmentModel(
             id=self.id,
             user_id=self.user_key.id(),
@@ -126,11 +131,11 @@ class Shipment(Base):
             destination_address=self.destination_address,
             receiver=self.receiver,
             receiver_contact=self.receiver_contact,
-            weight_kg=self.weight_kg,
+            weight_kg=Decimal(self.weight_kg),
             description=self.description,
             value=self.value,
             delivery_instructions=self.delivery_instructions,
-            events=self.events,
+            events=events,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
@@ -138,6 +143,7 @@ class Shipment(Base):
     @classmethod
     def from_model(cls, model: ShipmentModel):
         user_key = ndb.Key(User, model.user_id)
+
         return cls(
             id=model.id,
             user_key=user_key,
@@ -149,9 +155,8 @@ class Shipment(Base):
             destination_address=model.destination_address,
             receiver=model.receiver,
             receiver_contact=model.receiver_contact,
-            weight_kg=model.weight_kg,
+            weight_kg=str(model.weight_kg),
             description=model.description,
             value=model.value,
             delivery_instructions=model.delivery_instructions,
-            events=model.events,
         )

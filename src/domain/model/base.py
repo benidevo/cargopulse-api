@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 from enum import Enum
 from typing import Optional
 
@@ -12,19 +13,13 @@ class BaseModel(PydanticBaseModel):
 
     def to_serializable_dict(self) -> dict:
         """
-        Return a serializable dictionary representation of the model, excluding the 'password' field.
-        The dictionary will contain the model's data, with any datetime values converted to ISO format and any values containing 'url' converted to strings.
+        Converts the object to a serializable dictionary representation.
+
         Returns:
-            dict: The serializable dictionary representation of the model.
+            dict: The serializable dictionary representation of the object.
         """
         exclude = ("password",)
-        model_dict = self.model_dump(exclude=exclude)
-        for key, value in model_dict.items():
-            if isinstance(value, datetime):
-                model_dict[key] = value.isoformat()
-            if "url" in key:
-                model_dict[key] = str(value)
-
+        model_dict = self.model_dump(exclude=exclude, mode="json")
         return model_dict
 
 
