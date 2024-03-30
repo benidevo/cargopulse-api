@@ -21,9 +21,9 @@ services:
   db:
     image: google/cloud-sdk:470.0.0-emulators
     container_name: cargopulse-db
-    command: gcloud beta emulators datastore start --host-port=0.0.0.0:8081 --no-store-on-disk --quiet
-    ports:
-      - "8081:8081"
+    command: gcloud beta emulators datastore start --host-port=0.0.0.0:8081 --data-dir=/opt/data --quiet
+    expose:
+      - "8081"
     environment:
       - CLOUDSDK_CORE_PROJECT=dummy-project
     volumes:
