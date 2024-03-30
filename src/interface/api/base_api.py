@@ -5,9 +5,11 @@ from flask import abort, request
 from flask_restx import Resource
 from pydantic import ValidationError
 
+from application.interfaces import MetricsService
 from application.services.user_service import UserService
 from domain.model.user import UserModel
 from domain.services.authentication_service import AuthenticationService
+from infrastructure.cloud_monitoring.metric_service import CloudMetricsService
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +17,7 @@ logger = logging.getLogger(__name__)
 class BaseView(Resource):
     service = None
     serializer = None
+    metrics_service: MetricsService = CloudMetricsService()
 
     def _validate_payload(self, _serializer=None) -> Any:
         """

@@ -9,3 +9,6 @@ class DevConfig(CommonConfig):
     JWT_ACCESS_TOKEN_EXPIRATION_SECONDS: int
     DATASTORE_EMULATOR_HOST: str
     PORT: int = 8000
+
+    DEV_GCP_PROJECT_ID: str
+    DEV_GCP_SECRET_NAME: str

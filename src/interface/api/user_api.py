@@ -24,6 +24,7 @@ class LoginView(BaseView):
         if not token:
             abort(401, "Invalid email or password")
 
+        self.metrics_service.increment("successful_user_login")
         return {"message": "Login successful", "data": token}
 
 
@@ -41,6 +42,11 @@ class RegisterView(BaseView):
         payload = UserModel(**payload.model_dump())
 
         user = self.service.create_user(payload)
+        if not user:
+            abort(500, "Failed to create user")
+
+        self.metrics_service.increment("successful_user_registration")
+
         return (
             {
                 "message": "User created successfully",
@@ -80,4 +86,5 @@ class AccountView(AuthenticatedBaseView):
     def delete(self):
         user: UserModel = self._perform_authentication()
         self.service.delete_user(user.id)
+        self.metrics_service.increment("user_account_deleted")
         return {"message": "Account deleted successfully"}

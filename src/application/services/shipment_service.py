@@ -1,9 +1,11 @@
 from datetime import datetime
 from typing import Optional
 
+from application.interfaces import MetricsService
 from domain.model.shipment import ShipmentEvent, ShipmentModel
 from domain.repositories.shipment_repository import ShipmentRepository
 from domain.services.shipment_tracking_service import ShipmentTrackingService
+from infrastructure.cloud_monitoring.metric_service import CloudMetricsService
 from infrastructure.datastore.repositories.shipment import DatastoreShipmentRepository
 from interface.dtos import ShipmentCreateDto, ShipmentEventCreateDto
 
@@ -11,6 +13,7 @@ from interface.dtos import ShipmentCreateDto, ShipmentEventCreateDto
 class ShipmentService:
     shipment_repository: ShipmentRepository = DatastoreShipmentRepository()
     shipment_tracking_service: ShipmentTrackingService = ShipmentTrackingService()
+    metrics_service: MetricsService = CloudMetricsService()
 
     def get_shipment(self, shipment_id: str) -> Optional[ShipmentModel]:
         return self.shipment_repository.get_shipment(shipment_id)
