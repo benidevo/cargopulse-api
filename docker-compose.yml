@@ -13,28 +13,28 @@ services:
       - ./.env
     ports:
       - "8000:8000"
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     networks:
       - cargopulse
 
-  db:
-    image: google/cloud-sdk:470.0.0-emulators
-    container_name: cargopulse-db
-    command: gcloud beta emulators datastore start --host-port=0.0.0.0:8081 --data-dir=/opt/data --quiet
-    expose:
-      - "8081"
-    environment:
-      - CLOUDSDK_CORE_PROJECT=dummy-project
-    volumes:
-      - cargopulse_db_data:/opt/data
-    env_file:
-      - ./.env
-    networks:
-      - cargopulse
+#   db:
+#     image: google/cloud-sdk:470.0.0-emulators
+#     container_name: cargopulse-db
+#     command: gcloud beta emulators datastore start --host-port=0.0.0.0:8081 --data-dir=/opt/data --quiet
+#     expose:
+#       - "8081"
+#     environment:
+#       - CLOUDSDK_CORE_PROJECT=dummy-project
+#     volumes:
+#       - cargopulse_db_data:/opt/data
+#     env_file:
+#       - ./.env
+#     networks:
+#       - cargopulse
 
-volumes:
-  cargopulse_db_data:
+# volumes:
+#   cargopulse_db_data:
 
 
 networks:

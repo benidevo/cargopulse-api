@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from domain.model.user import UserModel
 from domain.repositories.user_repository import UserRepository
-from infrastructure.datastore.datastore_client import datastore_context
+from infrastructure.datastore.client import datastore_context
 from infrastructure.datastore.db_objects import User
 
 

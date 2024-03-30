@@ -6,6 +6,7 @@ class ProdConfig(CommonConfig):
     DEBUG: bool = False
     SECRET_KEY: str
 
-    GCP_SERVICE_ACCOUNT_EMAIL: str
-
     PORT: int = 80
+
+    PROD_GCP_PROJECT_ID: str
+    PROD_GCP_SECRET_NAME: str

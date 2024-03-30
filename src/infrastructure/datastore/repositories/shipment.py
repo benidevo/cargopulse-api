@@ -5,7 +5,7 @@ from google.cloud import ndb
 
 from domain.model.shipment import ShipmentEvent, ShipmentModel, ShipmentStatus
 from domain.repositories.shipment_repository import ShipmentRepository
-from infrastructure.datastore.datastore_client import datastore_context
+from infrastructure.datastore.client import datastore_context
 from infrastructure.datastore.db_objects import Shipment, User
 
 

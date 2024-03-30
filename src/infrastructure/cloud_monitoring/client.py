@@ -59,6 +59,10 @@ def stats(metric: str, value: int):
     Returns:
         None
     """
-    project_id: str = settings.DEV_GCP_PROJECT_ID or settings.PROD_GCP_PROJECT_ID
+    project_id: str = (
+        settings.DEV_GCP_PROJECT_ID
+        if hasattr(settings, "DEV_GCP_PROJECT_ID")
+        else settings.PROD_GCP_PROJECT_ID
+    )
     client = CloudMonitoringClient(project_id)
     client.write_custom_metric(metric, value)

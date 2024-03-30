@@ -10,7 +10,11 @@ from interface.api.api_key_api import api as api_key_api
 from interface.api.shipment_api import api as shipment_api
 from interface.api.user_api import api as user_api
 
-project_id = settings.DEV_GCP_PROJECT_ID or settings.PROD_GCP_PROJECT_ID
+project_id = (
+    settings.DEV_GCP_PROJECT_ID
+    if hasattr(settings, "DEV_GCP_PROJECT_ID")
+    else settings.PROD_GCP_PROJECT_ID
+)
 
 CloudMonitoringClient(project_id)
 

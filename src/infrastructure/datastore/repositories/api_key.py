@@ -1,11 +1,10 @@
 from typing import List, Optional
 
-from google.cloud import ndb
 
 from domain.model.api_key import ApiKeyModel
 from domain.repositories.api_key_repository import ApiKeyRepository
 from domain.repositories.user_repository import UserRepository
-from infrastructure.datastore.datastore_client import datastore_context
+from infrastructure.datastore.client import datastore_context
 from infrastructure.datastore.db_objects import ApiKey, User
 from infrastructure.datastore.repositories.user import DatastoreUserRepository
 
