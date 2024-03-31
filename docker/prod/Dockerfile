@@ -27,8 +27,9 @@ RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
 
 COPY ./src ${APP_HOME}
 
-COPY ./docker/prod/entrypoint /entrypoint
-RUN sed -i 's/\r//g' /entrypoint \
- && chmod +x /entrypoint
+COPY ./docker/prod/entrypoint ${APP_HOME}/entrypoint
+RUN sed -i 's/\r//g' ${APP_HOME}/entrypoint \
+ && chmod +x ${APP_HOME}/entrypoint
 
-CMD ["/entrypoint"]
+
+CMD ["/app/entrypoint"]
