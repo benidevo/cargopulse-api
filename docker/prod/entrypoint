@@ -5,13 +5,13 @@ set -o pipefail
 set -o nounset
 
 if [ -z "${LOG_LEVEL:-}" ]; then
-    export LOG_LEVEL="debug"
+    export LOG_LEVEL="info"
 fi
 
 export HTTP_PORT="80"
 
 if [ -z "${HTTP_WORKERS:-}" ]; then
-    export HTTP_WORKERS=1
+    export HTTP_WORKERS=2
 fi
 
 export PYTHONPATH=/app
