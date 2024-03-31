@@ -14,7 +14,7 @@ if [ -z "${HTTP_WORKERS:-}" ]; then
     export HTTP_WORKERS=2
 fi
 
-export PYTHONPATH=/app
+export PYTHONPATH=/app/src
 
 echo "Starting API Server..."
 

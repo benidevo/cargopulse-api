@@ -14,7 +14,7 @@ RUN pip wheel --wheel-dir /usr/src/app/wheels \
     -r /tmp/requirements/${BUILD_ENVIRONMENT}.txt
 
 FROM base as python-run-stage
-ARG APP_HOME=/app
+ARG APP_HOME=/app/src
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
