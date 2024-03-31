@@ -32,7 +32,7 @@ COPY --from=python-build-stage /usr/src/app/wheels /wheels/
 RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
     && rm -rf /wheels/
 
-COPY . ${APP_HOME}
+COPY ./src ${APP_HOME}
 
 COPY ./docker/dev/entrypoint /entrypoint
 RUN sed -i 's/\r//g' /entrypoint \
