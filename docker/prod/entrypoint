@@ -18,7 +18,7 @@ export PYTHONPATH=.
 
 echo "Starting API Server..."
 
-gunicorn_command="gunicorn main:app \
+gunicorn_command="gunicorn src.main:app \
     --bind 0.0.0.0:$HTTP_PORT \
     --workers $HTTP_WORKERS \
     --timeout 120 \
