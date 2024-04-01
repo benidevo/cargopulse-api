@@ -1,5 +1,5 @@
 import logging
-from functools import lru_cache
+from functools import lru_cache, wraps
 
 from google.auth.credentials import AnonymousCredentials
 from google.cloud import ndb
@@ -17,6 +17,7 @@ def get_datastore_client():
 
 
 def datastore_context(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         with get_datastore_client().context():
             logging.info("Datastore operation started")

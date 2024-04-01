@@ -1,4 +1,4 @@
-from functools import lru_cache
+from functools import lru_cache, wraps
 from typing import Callable
 
 from flask import abort, request
@@ -12,6 +12,7 @@ def get_auth_service() -> AuthenticationService:
 
 
 def authorized_api_call(func: Callable):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         api_key = request.headers.get("X-API-KEY")
         identity = request.headers.get("X-IDENTITY")

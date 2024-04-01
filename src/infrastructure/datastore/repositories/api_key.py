@@ -1,6 +1,5 @@
 from typing import List, Optional
 
-
 from domain.model.api_key import ApiKeyModel
 from domain.repositories.api_key_repository import ApiKeyRepository
 from domain.repositories.user_repository import UserRepository

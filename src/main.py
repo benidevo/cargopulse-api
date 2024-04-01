@@ -5,18 +5,9 @@ from flask_restx import Api
 from werkzeug.exceptions import NotFound
 
 from config import settings
-from infrastructure.cloud_monitoring.client import CloudMonitoringClient
 from interface.api.api_key_api import api as api_key_api
 from interface.api.shipment_api import api as shipment_api
 from interface.api.user_api import api as user_api
-
-project_id = (
-    settings.DEV_GCP_PROJECT_ID
-    if hasattr(settings, "DEV_GCP_PROJECT_ID")
-    else settings.PROD_GCP_PROJECT_ID
-)
-
-CloudMonitoringClient(project_id)
 
 app = Flask(__name__)
 app.config.from_object(settings)
