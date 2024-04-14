@@ -8,6 +8,10 @@ if [ -z "${LOG_LEVEL:-}" ]; then
     export LOG_LEVEL="debug"
 fi
 
+if [ -z "${DB_PORT:-}" ]; then
+    export DB_PORT="8081"
+fi
+
 export HTTP_PORT="8000"
 
 if [ -z "${HTTP_WORKERS:-}" ]; then
@@ -17,7 +21,7 @@ fi
 export PYTHONPATH=/app
 
 echo "Waiting for Database to be available..."
-while ! nc -z db 8081; do
+while ! nc -z db ${DB_PORT}; do
     sleep 0.1
 done
 echo "Database is up and running!"

@@ -12,3 +12,5 @@ class DevConfig(CommonConfig):
 
     DEV_GCP_PROJECT_ID: str
     DEV_GCP_SECRET_NAME: str
+
+    DATABASE_URL: str = "postgresql://cargopulse:cargopulse@db:5432/dev_db"

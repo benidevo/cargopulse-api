@@ -33,6 +33,21 @@ services:
     networks:
       - cargopulse
 
+  # db:
+  #   image: postgres:15.6-alpine3.19
+  #   container_name: cargopulse-db
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_DB=cargopulse
+  #     - POSTGRES_USER=cargopulse
+  #     - POSTGRES_PASSWORD=cargopulse
+  #   volumes:
+  #     - cargopulse_db_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - cargopulse
+
 volumes:
   cargopulse_db_data:
 
